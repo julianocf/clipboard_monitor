@@ -30,8 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.historico = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.filtro = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.arquivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.limparHistóricoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +60,13 @@
             "tsetset",
             "etestset",
             "tsetsets",
-            "esttestse"});
+            "esttestse",
+            "batata",
+            "alface",
+            "copiar",
+            "colar",
+            "teste",
+            "macarrão"});
             this.historico.Location = new System.Drawing.Point(2, 51);
             this.historico.Name = "historico";
             this.historico.ScrollAlwaysVisible = true;
@@ -69,21 +74,13 @@
             this.historico.TabIndex = 2;
             this.historico.Click += new System.EventHandler(this.Historico_Click);
             // 
-            // button1
+            // filtro
             // 
-            this.button1.Image = global::ClipboardMonitor.Properties.Resources.filter;
-            this.button1.Location = new System.Drawing.Point(286, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(25, 22);
-            this.button1.TabIndex = 5;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(2, 28);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(283, 20);
-            this.textBox1.TabIndex = 4;
+            this.filtro.Location = new System.Drawing.Point(2, 28);
+            this.filtro.Name = "filtro";
+            this.filtro.Size = new System.Drawing.Size(309, 20);
+            this.filtro.TabIndex = 4;
+            this.filtro.TextChanged += new System.EventHandler(this.filtro_TextChanged);
             // 
             // menuStrip1
             // 
@@ -108,14 +105,14 @@
             // limparHistóricoToolStripMenuItem
             // 
             this.limparHistóricoToolStripMenuItem.Name = "limparHistóricoToolStripMenuItem";
-            this.limparHistóricoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.limparHistóricoToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.limparHistóricoToolStripMenuItem.Text = "Limpar histórico";
             this.limparHistóricoToolStripMenuItem.Click += new System.EventHandler(this.LimparHistorico_Click);
             // 
             // sairToolStripMenuItem
             // 
             this.sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            this.sairToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sairToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.sairToolStripMenuItem.Text = "Sair";
             this.sairToolStripMenuItem.Click += new System.EventHandler(this.Sair_Click);
             // 
@@ -175,8 +172,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(313, 450);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.filtro);
             this.Controls.Add(this.historico);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(329, 489);
@@ -194,8 +190,7 @@
         #endregion
 
         private System.Windows.Forms.ListBox historico;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox filtro;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem arquivoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem limparHistóricoToolStripMenuItem;

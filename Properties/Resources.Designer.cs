@@ -63,9 +63,9 @@ namespace ClipboardMonitor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap filter {
+        internal static System.Drawing.Bitmap filter_dark {
             get {
-                object obj = ResourceManager.GetObject("filter", resourceCulture);
+                object obj = ResourceManager.GetObject("filter_dark", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
