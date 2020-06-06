@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.historico = new System.Windows.Forms.ListBox();
             this.filtro = new System.Windows.Forms.TextBox();
@@ -36,12 +37,10 @@
             this.limparHistóricoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configuraçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.restaurarPadrõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iniciarMinimizadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iniciarComOWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.armazenarHistóricoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copiarComCliqueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modoEscuroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,20 +52,8 @@
             this.historico.BackColor = System.Drawing.Color.White;
             this.historico.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.historico.FormattingEnabled = true;
+            this.historico.IntegralHeight = false;
             this.historico.ItemHeight = 15;
-            this.historico.Items.AddRange(new object[] {
-            "testes",
-            "testest",
-            "tsetset",
-            "etestset",
-            "tsetsets",
-            "esttestse",
-            "batata",
-            "alface",
-            "copiar",
-            "colar",
-            "teste",
-            "macarrão"});
             this.historico.Location = new System.Drawing.Point(2, 51);
             this.historico.Name = "historico";
             this.historico.ScrollAlwaysVisible = true;
@@ -119,39 +106,28 @@
             // configuraçõesToolStripMenuItem
             // 
             this.configuraçõesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.restaurarPadrõesToolStripMenuItem,
             this.iniciarMinimizadoToolStripMenuItem,
             this.iniciarComOWindowsToolStripMenuItem,
-            this.armazenarHistóricoToolStripMenuItem,
-            this.copiarComCliqueToolStripMenuItem,
-            this.modoEscuroToolStripMenuItem});
+            this.copiarComCliqueToolStripMenuItem});
             this.configuraçõesToolStripMenuItem.Name = "configuraçõesToolStripMenuItem";
             this.configuraçõesToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
             this.configuraçõesToolStripMenuItem.Text = "Configurações";
             // 
-            // restaurarPadrõesToolStripMenuItem
-            // 
-            this.restaurarPadrõesToolStripMenuItem.Name = "restaurarPadrõesToolStripMenuItem";
-            this.restaurarPadrõesToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.restaurarPadrõesToolStripMenuItem.Text = "Restaurar padrões";
-            // 
             // iniciarMinimizadoToolStripMenuItem
             // 
+            this.iniciarMinimizadoToolStripMenuItem.CheckOnClick = true;
             this.iniciarMinimizadoToolStripMenuItem.Name = "iniciarMinimizadoToolStripMenuItem";
             this.iniciarMinimizadoToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.iniciarMinimizadoToolStripMenuItem.Text = "Iniciar minimizado";
+            this.iniciarMinimizadoToolStripMenuItem.Click += new System.EventHandler(this.iniciarMinimizadoToolStripMenuItem_Click);
             // 
             // iniciarComOWindowsToolStripMenuItem
             // 
+            this.iniciarComOWindowsToolStripMenuItem.CheckOnClick = true;
             this.iniciarComOWindowsToolStripMenuItem.Name = "iniciarComOWindowsToolStripMenuItem";
             this.iniciarComOWindowsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.iniciarComOWindowsToolStripMenuItem.Text = "Iniciar com o windows";
-            // 
-            // armazenarHistóricoToolStripMenuItem
-            // 
-            this.armazenarHistóricoToolStripMenuItem.Name = "armazenarHistóricoToolStripMenuItem";
-            this.armazenarHistóricoToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.armazenarHistóricoToolStripMenuItem.Text = "Armazenar histórico";
+            this.iniciarComOWindowsToolStripMenuItem.Click += new System.EventHandler(this.iniciarComOWindowsToolStripMenuItem_Click);
             // 
             // copiarComCliqueToolStripMenuItem
             // 
@@ -159,12 +135,14 @@
             this.copiarComCliqueToolStripMenuItem.Name = "copiarComCliqueToolStripMenuItem";
             this.copiarComCliqueToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.copiarComCliqueToolStripMenuItem.Text = "Copiar com clique";
+            this.copiarComCliqueToolStripMenuItem.Click += new System.EventHandler(this.copiarComCliqueToolStripMenuItem_Click);
             // 
-            // modoEscuroToolStripMenuItem
+            // notifyIcon1
             // 
-            this.modoEscuroToolStripMenuItem.Name = "modoEscuroToolStripMenuItem";
-            this.modoEscuroToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.modoEscuroToolStripMenuItem.Text = "Modo escuro";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Clipboard Monitor";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
             // MainForm
             // 
@@ -180,6 +158,7 @@
             this.Text = "Clipboard Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_Closing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -196,12 +175,10 @@
         private System.Windows.Forms.ToolStripMenuItem limparHistóricoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sairToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configuraçõesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem restaurarPadrõesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iniciarMinimizadoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iniciarComOWindowsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem armazenarHistóricoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copiarComCliqueToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modoEscuroToolStripMenuItem;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 

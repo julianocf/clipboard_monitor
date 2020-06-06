@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.Configuration;
+using System.Collections.Specialized;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -7,7 +10,9 @@ namespace ClipboardMonitor
 {
     public partial class MainForm : Form
     {
-
+        // collection para filtrar o conteúdo do listBox
+        List<string> historicoCollection = new List<string>();
+        
         // WM_DRAWCLIPBOARD é mensagem que o programa recebe referente as chamadas da área de transferência no windows
         // essas mensagens são encaminhadas para após registrar o programa como Clipboard Viewer (SetClipboardViewer).
         // fonte: https://www.fluxbytes.com/csharp/monitor-clipboard-in-c/
@@ -20,6 +25,8 @@ namespace ClipboardMonitor
 
         private const int WM_DRAWCLIPBOARD = 0x0308; 
         private IntPtr _clipboardViewerNext;
+
+        private bool closeApp = false;
 
         protected override void WndProc(ref Message m)
         {
@@ -45,28 +52,44 @@ namespace ClipboardMonitor
             }
         }
 
-        List<string> historicoCollection = new List<string>();
         public MainForm()
         {
             InitializeComponent();
             // registra o form na cadeia de Clipboard Viewers
             _clipboardViewerNext = SetClipboardViewer(this.Handle);
-            // salva no collection o conteúdo do listbox
-            foreach (string str in historico.Items)
-            {
-                historicoCollection.Add(str);
-            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Text = "Clipboard Monitor v.001";
+            // define o estado dos menus de acordo com as opções salvas
+            iniciarMinimizadoToolStripMenuItem.Checked = Properties.Settings.Default.iniciar_minimizado;
+            iniciarComOWindowsToolStripMenuItem.Checked = Properties.Settings.Default.iniciar_com_o_windows;
+            copiarComCliqueToolStripMenuItem.Checked = Properties.Settings.Default.copiar_com_clique;
+            
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            if (iniciarMinimizadoToolStripMenuItem.Checked) { 
+                // altera o estado da janela para minimizado
+                this.WindowState = FormWindowState.Minimized;
+                // fecha o form
+                this.Hide();
+            }
         }
 
         private void MainForm_Closing(object sender, FormClosingEventArgs e)
         {
-            // remove o form na cadeia de Clipboard Viewers antes de fechar 
-            ChangeClipboardChain(this.Handle, _clipboardViewerNext);
+            // minimiza se é o usuário fechando o form pelo "X"
+            if (e.CloseReason == CloseReason.UserClosing && !closeApp)
+            {
+                this.Hide();
+                e.Cancel = true;
+            } else { 
+                // remove o form na cadeia de Clipboard Viewers antes de fechar 
+                ChangeClipboardChain(this.Handle, _clipboardViewerNext);
+            }
         }
 
         private void LimparHistorico_Click(object sender, EventArgs e)
@@ -79,6 +102,9 @@ namespace ClipboardMonitor
 
         private void Sair_Click(object sender, EventArgs e)
         {
+            // para fechar o form e não minimizar
+            closeApp = true;
+            // fecha o aplicativo
             Close();
         }
 
@@ -120,7 +146,58 @@ namespace ClipboardMonitor
             }
             // finaliza a edição e permite o listBox processar o "painting"
             historico.EndUpdate();
-        } 
+        }
+
+        private void iniciarMinimizadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // guarda o valor da propriedade
+            Properties.Settings.Default.iniciar_minimizado = iniciarMinimizadoToolStripMenuItem.Checked;
+            // salva a propriedade
+            Properties.Settings.Default.Save();
+        }
+
+        private void iniciarComOWindowsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // salva ou remove da inicialização do windows
+            RegisterInStartup(iniciarComOWindowsToolStripMenuItem.Checked);
+            // guarda o valor da propriedade
+            Properties.Settings.Default.iniciar_com_o_windows = iniciarComOWindowsToolStripMenuItem.Checked;
+            // salva a propriedade
+            Properties.Settings.Default.Save();
+        }
+
+        private void copiarComCliqueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // guarda o valor da propriedade
+            Properties.Settings.Default.copiar_com_clique = copiarComCliqueToolStripMenuItem.Checked; 
+            // salva a propriedade
+            Properties.Settings.Default.Save();
+        }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            // mostra o form
+            this.Show();
+            // restaura o estado da janela
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        //https://stackoverflow.com/questions/5089601/how-to-run-a-c-sharp-application-at-windows-startup
+        //Since question is WPF related, notice that Application.ExecutablePath is part of System.Windows.Forms, and will result in cannot resolve symbol in WPF project. You can use System.Reflection.Assembly.GetExecutingAssembly().Location as proper replacement. – itsho Feb 22 '15 at 7:024
+        //Assembly.GetExecutingAssembly() will get the assembly currently running the code.It will not get the correct assembly if the code is executed on another assembly. Use Assembly.GetEntryAssembly() instead. 
+        private void RegisterInStartup(bool isChecked)
+        {
+            RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
+                    ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (isChecked)
+            {
+                registryKey.SetValue("ApplicationName", Application.ExecutablePath);
+            }
+            else
+            {
+                registryKey.DeleteValue("ApplicationName");
+            }
+        }
 
     }
 }
