@@ -38,24 +38,60 @@ namespace ClipboardMonitor.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool iniciar_com_o_windows {
-            get {
-                return ((bool)(this["iniciar_com_o_windows"]));
-            }
-            set {
-                this["iniciar_com_o_windows"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool iniciar_minimizado {
             get {
                 return ((bool)(this["iniciar_minimizado"]));
             }
             set {
                 this["iniciar_minimizado"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("489")]
+        public int altura_da_janela {
+            get {
+                return ((int)(this["altura_da_janela"]));
+            }
+            set {
+                this["altura_da_janela"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("329")]
+        public int largura_da_janela {
+            get {
+                return ((int)(this["largura_da_janela"]));
+            }
+            set {
+                this["largura_da_janela"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int posicao_da_janela_x {
+            get {
+                return ((int)(this["posicao_da_janela_x"]));
+            }
+            set {
+                this["posicao_da_janela_x"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int posicao_da_janela_y {
+            get {
+                return ((int)(this["posicao_da_janela_y"]));
+            }
+            set {
+                this["posicao_da_janela_y"] = value;
             }
         }
     }

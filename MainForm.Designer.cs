@@ -41,7 +41,11 @@
             this.iniciarComOWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copiarComCliqueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.abrirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sairToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // historico
@@ -63,11 +67,14 @@
             // 
             // filtro
             // 
+            this.filtro.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.filtro.Location = new System.Drawing.Point(2, 28);
             this.filtro.Name = "filtro";
             this.filtro.Size = new System.Drawing.Size(309, 20);
             this.filtro.TabIndex = 4;
-            this.filtro.TextChanged += new System.EventHandler(this.filtro_TextChanged);
+            this.filtro.TextChanged += new System.EventHandler(this.Filtro_TextChanged);
             // 
             // menuStrip1
             // 
@@ -92,14 +99,14 @@
             // limparHistóricoToolStripMenuItem
             // 
             this.limparHistóricoToolStripMenuItem.Name = "limparHistóricoToolStripMenuItem";
-            this.limparHistóricoToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.limparHistóricoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.limparHistóricoToolStripMenuItem.Text = "Limpar histórico";
             this.limparHistóricoToolStripMenuItem.Click += new System.EventHandler(this.LimparHistorico_Click);
             // 
             // sairToolStripMenuItem
             // 
             this.sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            this.sairToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.sairToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sairToolStripMenuItem.Text = "Sair";
             this.sairToolStripMenuItem.Click += new System.EventHandler(this.Sair_Click);
             // 
@@ -119,7 +126,7 @@
             this.iniciarMinimizadoToolStripMenuItem.Name = "iniciarMinimizadoToolStripMenuItem";
             this.iniciarMinimizadoToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.iniciarMinimizadoToolStripMenuItem.Text = "Iniciar minimizado";
-            this.iniciarMinimizadoToolStripMenuItem.Click += new System.EventHandler(this.iniciarMinimizadoToolStripMenuItem_Click);
+            this.iniciarMinimizadoToolStripMenuItem.Click += new System.EventHandler(this.IniciarMinimizadoToolStripMenuItem_Click);
             // 
             // iniciarComOWindowsToolStripMenuItem
             // 
@@ -127,7 +134,7 @@
             this.iniciarComOWindowsToolStripMenuItem.Name = "iniciarComOWindowsToolStripMenuItem";
             this.iniciarComOWindowsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.iniciarComOWindowsToolStripMenuItem.Text = "Iniciar com o windows";
-            this.iniciarComOWindowsToolStripMenuItem.Click += new System.EventHandler(this.iniciarComOWindowsToolStripMenuItem_Click);
+            this.iniciarComOWindowsToolStripMenuItem.Click += new System.EventHandler(this.IniciarComOWindowsToolStripMenuItem_Click);
             // 
             // copiarComCliqueToolStripMenuItem
             // 
@@ -135,14 +142,37 @@
             this.copiarComCliqueToolStripMenuItem.Name = "copiarComCliqueToolStripMenuItem";
             this.copiarComCliqueToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.copiarComCliqueToolStripMenuItem.Text = "Copiar com clique";
-            this.copiarComCliqueToolStripMenuItem.Click += new System.EventHandler(this.copiarComCliqueToolStripMenuItem_Click);
+            this.copiarComCliqueToolStripMenuItem.Click += new System.EventHandler(this.CopiarComCliqueToolStripMenuItem_Click);
             // 
             // notifyIcon1
             // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Clipboard Monitor";
             this.notifyIcon1.Visible = true;
-            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.NotifyIcon1_DoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.abrirToolStripMenuItem,
+            this.sairToolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 48);
+            // 
+            // abrirToolStripMenuItem
+            // 
+            this.abrirToolStripMenuItem.Name = "abrirToolStripMenuItem";
+            this.abrirToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.abrirToolStripMenuItem.Text = "Restaurar";
+            this.abrirToolStripMenuItem.Click += new System.EventHandler(this.NotifyIcon1_DoubleClick);
+            // 
+            // sairToolStripMenuItem1
+            // 
+            this.sairToolStripMenuItem1.Name = "sairToolStripMenuItem1";
+            this.sairToolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
+            this.sairToolStripMenuItem1.Text = "Sair";
+            this.sairToolStripMenuItem1.Click += new System.EventHandler(this.Sair_Click);
             // 
             // MainForm
             // 
@@ -161,6 +191,7 @@
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,6 +210,9 @@
         private System.Windows.Forms.ToolStripMenuItem iniciarComOWindowsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copiarComCliqueToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem abrirToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sairToolStripMenuItem1;
     }
 }
 

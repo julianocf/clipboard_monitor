@@ -5,11 +5,20 @@
     <Setting Name="copiar_com_clique" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="iniciar_com_o_windows" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="iniciar_minimizado" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="altura_da_janela" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">489</Value>
+    </Setting>
+    <Setting Name="largura_da_janela" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">329</Value>
+    </Setting>
+    <Setting Name="posicao_da_janela_x" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="posicao_da_janela_y" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

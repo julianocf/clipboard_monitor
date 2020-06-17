@@ -1,10 +1,9 @@
-﻿using System.Configuration;
-using System.Collections.Specialized;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.IO;
+using System.Reflection;
 
 namespace ClipboardMonitor
 {
@@ -42,7 +41,7 @@ namespace ClipboardMonitor
                 {
                     string text = (string)iData.GetData(DataFormats.Text);
                     // verifica se o item já consta na lista
-                    if (!this.historico.Items.Contains(text))
+                    if (!this.historicoCollection.Contains(text))
                     {
                         // adiciona na lista e no collection(usado no filtro)
                         historico.Items.Add(text);
@@ -61,12 +60,19 @@ namespace ClipboardMonitor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Text = "Clipboard Monitor v.001";
+            // preenche o título do form com a versão do aplicativo
+            string versao_atual = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            this.Text = String.Format("Clipboard Monitor {0}", versao_atual.Substring(0,3));
+            // define as dimensões da janela de acordo com as configurações salvas
+            this.Height = Properties.Settings.Default.altura_da_janela;
+            this.Width = Properties.Settings.Default.largura_da_janela;
+            // posição da janela
+            this.Top = Properties.Settings.Default.posicao_da_janela_x;
+            this.Left = Properties.Settings.Default.posicao_da_janela_y;
             // define o estado dos menus de acordo com as opções salvas
             iniciarMinimizadoToolStripMenuItem.Checked = Properties.Settings.Default.iniciar_minimizado;
-            iniciarComOWindowsToolStripMenuItem.Checked = Properties.Settings.Default.iniciar_com_o_windows;
-            copiarComCliqueToolStripMenuItem.Checked = Properties.Settings.Default.copiar_com_clique;
-            
+            iniciarComOWindowsToolStripMenuItem.Checked =  File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\ClipboardMonitor.lnk");
+            copiarComCliqueToolStripMenuItem.Checked = Properties.Settings.Default.copiar_com_clique;            
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -81,6 +87,14 @@ namespace ClipboardMonitor
 
         private void MainForm_Closing(object sender, FormClosingEventArgs e)
         {
+            // guarda a posição da janela
+            Properties.Settings.Default.posicao_da_janela_x = this.Top;
+            Properties.Settings.Default.posicao_da_janela_y = this.Left;
+            // guarda o valor da altura x largura
+            Properties.Settings.Default.altura_da_janela = this.Height;
+            Properties.Settings.Default.largura_da_janela = this.Width;
+            // salva as propriedades
+            Properties.Settings.Default.Save();
             // minimiza se é o usuário fechando o form pelo "X"
             if (e.CloseReason == CloseReason.UserClosing && !closeApp)
             {
@@ -118,7 +132,7 @@ namespace ClipboardMonitor
             }
         }
 
-        private void filtro_TextChanged(object sender, EventArgs e)
+        private void Filtro_TextChanged(object sender, EventArgs e)
         {
             // pausa o "painting" do listbox
             historico.BeginUpdate();
@@ -148,7 +162,7 @@ namespace ClipboardMonitor
             historico.EndUpdate();
         }
 
-        private void iniciarMinimizadoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void IniciarMinimizadoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // guarda o valor da propriedade
             Properties.Settings.Default.iniciar_minimizado = iniciarMinimizadoToolStripMenuItem.Checked;
@@ -156,17 +170,17 @@ namespace ClipboardMonitor
             Properties.Settings.Default.Save();
         }
 
-        private void iniciarComOWindowsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void IniciarComOWindowsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // salva ou remove da inicialização do windows
             RegisterInStartup(iniciarComOWindowsToolStripMenuItem.Checked);
             // guarda o valor da propriedade
-            Properties.Settings.Default.iniciar_com_o_windows = iniciarComOWindowsToolStripMenuItem.Checked;
+            Properties.Settings.Default.iniciar_minimizado = iniciarComOWindowsToolStripMenuItem.Checked;
             // salva a propriedade
             Properties.Settings.Default.Save();
         }
 
-        private void copiarComCliqueToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopiarComCliqueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // guarda o valor da propriedade
             Properties.Settings.Default.copiar_com_clique = copiarComCliqueToolStripMenuItem.Checked; 
@@ -174,7 +188,7 @@ namespace ClipboardMonitor
             Properties.Settings.Default.Save();
         }
 
-        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        private void NotifyIcon1_DoubleClick(object sender, EventArgs e)
         {
             // mostra o form
             this.Show();
@@ -186,18 +200,30 @@ namespace ClipboardMonitor
         //Since question is WPF related, notice that Application.ExecutablePath is part of System.Windows.Forms, and will result in cannot resolve symbol in WPF project. You can use System.Reflection.Assembly.GetExecutingAssembly().Location as proper replacement. – itsho Feb 22 '15 at 7:024
         //Assembly.GetExecutingAssembly() will get the assembly currently running the code.It will not get the correct assembly if the code is executed on another assembly. Use Assembly.GetEntryAssembly() instead. 
         private void RegisterInStartup(bool isChecked)
-        {
-            RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
-                    ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        {            
+            //shell:startup
+
             if (isChecked)
             {
-                registryKey.SetValue("ApplicationName", Application.ExecutablePath);
-            }
+                //create shortcut to file in startup
+                IWshRuntimeLibrary.WshShell wsh = new IWshRuntimeLibrary.WshShell();
+                IWshRuntimeLibrary.IWshShortcut shortcut = wsh.CreateShortcut(
+                Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\ClipboardMonitor.lnk") as IWshRuntimeLibrary.IWshShortcut;
+                shortcut.Arguments = "";
+                shortcut.TargetPath = Environment.CurrentDirectory + @"\ClipboardMonitor.exe";
+                shortcut.WindowStyle = 1;
+                shortcut.Description = "Clipboard Monitor";
+                shortcut.WorkingDirectory = Environment.CurrentDirectory + @"\";
+                //shortcut.IconLocation = @"clipboard.ico";
+                shortcut.Save();
+            } 
             else
-            {
-                registryKey.DeleteValue("ApplicationName");
+            {  
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\ClipboardMonitor.lnk"))
+                {  
+                    File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\ClipboardMonitor.lnk");
+                }
             }
         }
-
     }
 }
